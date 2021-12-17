@@ -134,7 +134,7 @@ class PerceiverIO(nn.Module):
         self.layers = nn.ModuleList([])
         cache_args = {'_cache': weight_tie_layers}
 
-        for i in range(depth):
+        for _ in range(depth):
             self.layers.append(nn.ModuleList([
                 get_latent_attn(**cache_args),
                 get_latent_ff(**cache_args)
@@ -223,5 +223,4 @@ class PerceiverLM(nn.Module):
         pos_emb = rearrange(pos_emb, 'n d -> () n d')
         x = x + pos_emb
 
-        logits = self.perceiver_io(x, mask = mask, queries = x)
-        return logits
+        return self.perceiver_io(x, mask = mask, queries = x)
